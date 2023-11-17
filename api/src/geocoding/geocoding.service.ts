@@ -12,7 +12,7 @@ export class GeocodingService {
   }
 
   async getLocationFromCityStateName(cityStateName: string): Promise<{ latitude: string, longitude: string }> {
-    const [city, state] = cityStateName.replace(' ', '').split(','); // trim whitespace that might have been supplied in the request before forwarding to the OpenWeather API
+    const [city, state] = cityStateName.trim().split(','); // trim whitespace that might have been supplied in the request before forwarding to the OpenWeather API
     return this.openWeatherMapService.getLocationFromCityStateName(city, state);
   }
 }
