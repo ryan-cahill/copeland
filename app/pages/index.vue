@@ -20,6 +20,10 @@
               <UInput v-model="cityState" placeholder="City" />
               <UButton class="request-button" icon="i-heroicons-paper-airplane" :disabled="loadingResult" @click="searchCity">Submit</UButton>
             </div>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+              <div>Current location</div>
+              <UButton class="request-button" icon="i-heroicons-paper-airplane" :disabled="loadingResult" @click="searchCurrentLocation">Submit</UButton>
+            </div>
           </div>
           
           <div class="data-container">
@@ -50,6 +54,8 @@
   let cityState = ref('Boston, MA');
   let mapData = ref({});
   let loadingResult = ref(false);
+  let currentLatitude;
+  let currentLongitude;
 
   let googleMap;
   if (process.client) {
@@ -72,19 +78,23 @@
       loadingResult = true;
       const latitude = event.latLng.lat();
       const longitude = event.latLng.lng();
-      const { data, error } = await useFetch(`http://localhost:3000/weather/current`, { query: {
-        latitude,
-        longitude
-      }});
-      if (error.value) {
-        toast.add({ title: 'Error fetching data', description: error.value.message });
-        loadingResult = false;
-        return;
-      }
-      mapData.value = data.value;
-      moveGoogleMap(data.value.coord);
-      loadingResult = false;
+      searchCoordinates(latitude, longitude);
     });
+  }
+
+  async function searchCoordinates(latitude, longitude) {
+    const { data, error } = await useFetch(`http://localhost:3000/weather/current`, { query: {
+      latitude,
+      longitude
+    }});
+    if (error.value) {
+      toast.add({ title: 'Error fetching data', description: error.value.message });
+      loadingResult = false;
+      return;
+    }
+    mapData.value = data.value;
+    moveGoogleMap(data.value.coord);
+    loadingResult = false;
   }
 
   async function searchCity() {
@@ -117,6 +127,22 @@
     mapData.value = data.value;
     moveGoogleMap(data.value.coord);
     loadingResult = false;
+  }
+
+  async function searchCurrentLocation() {
+    // https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition
+    navigator.geolocation.getCurrentPosition(currentLocationSuccessHandler, currentLocationErrorHandler);
+  }
+
+  async function currentLocationSuccessHandler(position) {
+    const coordinates = position.coords;
+    currentLatitude = coordinates.latitude;
+    currentLongitude = coordinates.longitude;
+    searchCoordinates(currentLatitude, currentLongitude);
+  }
+
+  async function currentLocationErrorHandler(error) {
+    console.log('Location access denied');
   }
 
   function moveGoogleMap(coord) {
