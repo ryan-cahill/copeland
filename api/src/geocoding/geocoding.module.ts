@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
+import { OpenWeatherMapModule } from '../open-weather/open-weather.module';
 import { GeocodingService } from './geocoding.service';
-import { OpenWeatherMapModule } from 'src/open-weather/open-weather.module';
 
 @Module({
   imports: [OpenWeatherMapModule],

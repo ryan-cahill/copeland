@@ -1,4 +1,4 @@
-# Copeland 
+# Weather viewer app 
 
 This project contains two different applications. One is an API to get data from the OpenWeather API, and the other is an app powered by the API in this project.
 
@@ -14,7 +14,7 @@ The following is required before running the application:
 
 ### API
 
-In order run the API, navigate to the `./api` directory then run the command `OPENWEATHERMAP_APP_ID=cf002751564a4c78f5f7ed479f1b9ba3 npm run start:debug` in a terminal.
+In order run the API, navigate to the `./api` directory then run the command `OPENWEATHERMAP_APP_ID=<your_openweather_api_key> npm run start:debug` in a terminal.
 
 ### app
 
