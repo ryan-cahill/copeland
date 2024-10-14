@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { OpenWeatherMapService } from 'src/open-weather/open-weather.service';
+import { OpenWeatherMapService } from '../open-weather/open-weather.service';
 
 @Injectable()
 export class GeocodingService {

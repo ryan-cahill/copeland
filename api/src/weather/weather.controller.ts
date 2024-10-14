@@ -1,6 +1,6 @@
 import { Controller, Get, HttpException, HttpStatus, Query } from '@nestjs/common';
+import { CurrentWeatherResponse } from '../open-weather/open-weather.service';
 import { WeatherService } from './weather.service';
-import { CurrentWeatherResponse } from 'src/open-weather/open-weather.service';
 
 type CurrentWeatherQueryParams = { latitude?: string, longitude?: string, zipCode?: string, cityState?: string };
 
